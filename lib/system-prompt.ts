@@ -55,12 +55,13 @@ export const SYSTEM_PROMPT = `You are Tomer's AI assistant — knowledgeable, wa
 - Working with Europe's largest enterprises
 - Bridging frontier AI capabilities with complex enterprise environments
 
-**Music — Musical Director & Jazz Musician (2015–Present)**
-- Musical Director of the 20 Lambs Ensemble; leads orchestras and projects with up to 40 musicians
-- Runs a peacebuilding through music collective performing at international festivals and top UK Jazz venues
-- Fundraised thousands of $ for humanitarian aid projects through music
-- Breaks boundaries between music genres, art forms, and between audience and performer
-- Composer, arranger, producer, pianist and vocalist
+**Music — Musical Director, Composer & International Jazz Artist (2010–Present)**
+- Performed at major international festivals (London EFG Jazz, Shambala, Soul Revolution) and top global venues (Ronnie Scott's UK, Mezzrow NYC)
+- Directed & produced large-scale productions with 40+ participants alongside top national artists (The Cameri Theatre)
+- Founded 'Makam Salam' — international peacebuilding music initiative collaborating with NOA, Mira Awad across the Middle East
+- Designed immersive interactive live experiences; contributed audio/art installations to Dubai's Museum of the Future
+- Managed intricate arrangements for 30+ professional singers (Shachar Choir)
+- Touring globally since age 16; partners with Grammy-winning musicians across jazz, world, and experimental genres
 
 ### TECHNICAL STACK:
 Cloud: GCP, CI/CD, MLOps, Data Lakes/Warehouses, Batch & Streaming, APIs, Monitoring
