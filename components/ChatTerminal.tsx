@@ -38,10 +38,33 @@ const SYSTEM_INTRO: Message = {
   content: 'Hi — I\'m Tomer\'s AI assistant. I know his full career inside out: from IDF intelligence to Palantir to frontier AI deployment. Ask me anything.',
 }
 
+function renderMarkdown(text: string): React.ReactNode[] {
+  const segments = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g)
+  return segments.flatMap((seg, i) => {
+    if (seg.startsWith('**') && seg.endsWith('**')) {
+      return [<strong key={i} className="font-semibold text-slate-100">{seg.slice(2, -2)}</strong>]
+    }
+    if (seg.startsWith('*') && seg.endsWith('*')) {
+      return [<em key={i} className="italic">{seg.slice(1, -1)}</em>]
+    }
+    if (seg.startsWith('`') && seg.endsWith('`')) {
+      return [
+        <code key={i} className="font-mono text-xs px-1 py-0.5 rounded"
+          style={{ background: 'rgba(6,182,212,0.1)', color: '#67e8f9' }}>
+          {seg.slice(1, -1)}
+        </code>
+      ]
+    }
+    return seg.split('\n').flatMap((line, j, arr) =>
+      j < arr.length - 1 ? [<span key={`${i}-${j}`}>{line}</span>, <br key={`${i}-${j}-br`} />] : [<span key={`${i}-${j}`}>{line}</span>]
+    )
+  })
+}
+
 function StreamingText({ text, streaming }: { text: string; streaming: boolean }) {
   return (
     <span>
-      {text}
+      {renderMarkdown(text)}
       {streaming && (
         <span
           className="inline-block w-1.5 h-3.5 ml-0.5 align-middle rounded-sm"
