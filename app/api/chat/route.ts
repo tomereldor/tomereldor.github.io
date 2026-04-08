@@ -8,7 +8,7 @@ const client = new OpenAI({
 
 const FREE_MODELS = [
   'google/gemma-3-27b-it:free',
-  'deepseek/deepseek-r1:free',
+  'mistralai/mistral-7b-instruct:free',
   'meta-llama/llama-3.3-70b-instruct:free',
 ]
 
@@ -51,8 +51,9 @@ export async function POST(req: Request) {
           return
         } catch (err) {
           lastError = err instanceof Error ? err.message : 'Unknown error'
-          // Only retry on rate limit (429); propagate other errors immediately
-          if (!lastError.includes('429')) break
+          // Retry on provider errors (429 rate limit, 400/404 bad model); stop on auth/other
+          const isProviderError = lastError.includes('429') || lastError.includes('400') || lastError.includes('404')
+          if (!isProviderError) break
         }
       }
 
