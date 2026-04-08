@@ -1,7 +1,10 @@
-import Anthropic from '@anthropic-ai/sdk'
+import OpenAI from 'openai'
 import { SYSTEM_PROMPT } from '@/lib/system-prompt'
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+const client = new OpenAI({
+  baseURL: 'https://openrouter.ai/api/v1',
+  apiKey: process.env.OPENROUTER_API_KEY,
+})
 
 export async function POST(req: Request) {
   const { messages } = await req.json()
@@ -11,21 +14,19 @@ export async function POST(req: Request) {
   const stream = new ReadableStream({
     async start(controller) {
       try {
-        const response = anthropic.messages.stream({
-          model: process.env.ANTHROPIC_MODEL || 'claude-haiku-4-5-20251001',
+        const response = await client.chat.completions.create({
+          model: process.env.OPENROUTER_MODEL || 'meta-llama/llama-3.3-70b-instruct:free',
           max_tokens: 1024,
-          system: SYSTEM_PROMPT,
-          messages,
+          messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
+          stream: true,
         })
 
-        for await (const event of response) {
-          if (
-            event.type === 'content_block_delta' &&
-            event.delta.type === 'text_delta'
-          ) {
+        for await (const chunk of response) {
+          const text = chunk.choices[0]?.delta?.content
+          if (text) {
             controller.enqueue(
               encoder.encode(
-                `data: ${JSON.stringify({ type: 'text', text: event.delta.text })}\n\n`
+                `data: ${JSON.stringify({ type: 'text', text })}\n\n`
               )
             )
           }
