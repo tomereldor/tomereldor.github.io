@@ -6,7 +6,10 @@ const client = new OpenAI({
   apiKey: process.env.OPENROUTER_API_KEY,
 })
 
-const FREE_MODELS = [
+// Primary: Haiku (fast, cheap). Fallbacks: paid cheap → free tier.
+const MODELS = [
+  'anthropic/claude-haiku-4-5',
+  'google/gemma-2-9b-it',
   'google/gemma-3-27b-it:free',
   'mistralai/mistral-7b-instruct:free',
   'meta-llama/llama-3.3-70b-instruct:free',
@@ -18,7 +21,7 @@ export async function POST(req: Request) {
   const encoder = new TextEncoder()
   const models = process.env.OPENROUTER_MODEL
     ? [process.env.OPENROUTER_MODEL]
-    : FREE_MODELS
+    : MODELS
 
   const stream = new ReadableStream({
     async start(controller) {
