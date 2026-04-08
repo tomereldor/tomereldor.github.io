@@ -8,7 +8,7 @@ const client = new OpenAI({
 
 const FREE_MODELS = [
   'google/gemma-3-27b-it:free',
-  'deepseek/deepseek-chat-v3-0324:free',
+  'deepseek/deepseek-r1:free',
   'meta-llama/llama-3.3-70b-instruct:free',
 ]
 
